@@ -177,7 +177,9 @@ fp_ = state_fp_mahab(data.values,
 st.title('Regime Analysis of the US Economy')
 
 ### Explanation of Approach
-st.subheader('Explanation of Approach')
+st.subheader('Empirical Approach')
+st.write("Approach to use State-Dependent probabilities that aim at improving the Signal-to-Noise Ratio.")
+st.write("Instead of using equal weights across time, this approach increase weights that are close to a determined point in time.")
 st.write("The Analysis marks data points with are similar to the data point of the selected Regime Period.")
 st.write("The darker the point, the higher the resemblence.") 
 st.write("A point with a higher resemblence obtains a higher weight according to the Gaussian Kernel (Mahalanobis Distance):")
