@@ -178,21 +178,16 @@ st.title('Regime Analysis of the US Economy')
 
 ### Explanation of Approach
 st.subheader('Empirical Approach')
-st.write("The following approach determines state-dependent probabilities based on a selected economic time series and a predefined data.\n that aim at improving the Signal-to-Noise Ratio.")
-st.write("Instead of using equal weights across time, this approach increase weights that are close to a determined point in time. Thereby, it overweights past data points which regimes which are close to the current one.")
-st.write("The Analysis marks data points with are similar to the data point of the selected Regime Period.")
-st.write("The darker the point, the higher the resemblence.") 
+st.write("The aim of the present empirical approach is to calculate regime-dependent probabilities for weighting time points in statistical analyses to increase the Signal-to-Noise Ratio. The common implicit assumption in textbook statistical analysis is to equally weight each data point. This is a inferior approach as it does not use information about the current state of the economy.")              
+st.write("For this purpose, regime-dependent probabilities are generated based on a time series and a chosen regime value. Based on the regime value, the 'similarity' is computed for each time point. High similarity equates to a higher probability of the data point or time point, whereas low similarity or high distance generates a low probability. Thereby, it overweights past data points which are close to the predefined regime-value.")
 st.write("A point with a higher resemblence obtains a higher weight according to the Gaussian Kernel (Mahalanobis Distance):")
-
 st.latex(r'''
          p_{t}|z^{*} = p*exp({(-((x-\mu_{x})^{'} * (h^{2})^{(-1)} * (x - \mu_{x})))})       
          ''')
 st.latex(r'''
-         with: \mu_{x}=E\{X|z^{*}\}) ~ and ~ h \in \mathbb{R}
+         with: \mu_{x}=E\{X|z^{*}\}),~ h \in \mathbb{R},~z^{*}: Regime-Value 
          ''')
-st.write("h is the Bandwith Parameter and determines the amount of data points included in the analysis.")
-
-
+st.write("h is the Bandwith Parameter and determines the amount of information included in the analysis.")
 
 
 ### Create Plotly Graph - Regime Plot
