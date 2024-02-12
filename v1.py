@@ -209,7 +209,7 @@ st.subheader('Regime Analysis')
 # Create color array similar to Matplotlib code
 p_colors = (fp_ - min(fp_)) / (max(fp_) - min(fp_))
 
-# Number of Scenarios
+# Number of Scenarios (Entropy Measure)
 ens = np.exp(-(fp_@np.log(fp_))) / len(data)
 ens_string = f'Data Information included: {np.round(ens,2)*100}%)'
 
@@ -252,10 +252,10 @@ layout = go.Layout(
     ]
 )
 
-# Create figure
+## Create figure
 fig_plotly = go.Figure(data=[trace], 
                        layout = layout)
-### Line Chart
+## Line Chart: Creation
 line_trace = go.Scatter(
     x=np.array(data.index),
     y=data.values,
@@ -263,8 +263,10 @@ line_trace = go.Scatter(
     line=dict(color='grey', width=1),  # Customize line color and width as needed
     name=metadata["title"]  # Provide a name for the line chart trace
 )
+# Line Chart: Add to Figure
+fig_plotly.add_trace(line_trace)
 
-# Create a vertical line - Baed on Regime Date
+# Vertical line - Baed on Regime Date: Creation and Add to Figure
 fig_plotly.add_shape(
     type="line",
     x0 = pd.Series(data.index).iloc[regime_date_idxpos], y0 = np.min(data),
@@ -272,7 +274,7 @@ fig_plotly.add_shape(
     line=dict(color="RoyalBlue", width=1)
 )
  
-# Create a horizontal line - Baed on Regime Date
+# Create line - Baed on Regime Date: Creation and Add to Figure
 fig_plotly.add_shape(
     type="line",
     x0=np.min(data.index), y0=data.values[regime_date_idxpos],
@@ -280,47 +282,39 @@ fig_plotly.add_shape(
     line=dict(color="RoyalBlue", width=1)
 )
 
-
-# Add the line trace to the existing figure
-fig_plotly.add_trace(line_trace)
-
+# Show the plot
 st.plotly_chart(fig_plotly)
 
 
-# 
+### Create Probability Plot
+# Header
 st.subheader("Probability Plot")
-
-# Create scatter trace with mode 'lines+markers'
+# Create scatter trace with mode 'lines+markers' for Regime and Equal Probs
 fig = go.Figure()
 fig.add_trace(go.Scatter(x=data.index, y=fp_, mode='lines+markers',name = "Regime Weight"))
 fig.add_trace(go.Scatter(x=data.index, y=np.repeat(1/len(fp_),len(fp_)), mode='lines',name = "Equal Weight"))
-
-
+# Set Y-Axis to Percentages
 fig.update_layout(yaxis=dict(tickformat='.2%'))
-
-
 # Show the plot
 st.plotly_chart(fig)
 
-
-st.subheader("Distribution of Regime Variable")
 ### Create Plotly Graph - Regime Plot
+# Header
+st.subheader("Distribution of Regime Variable")
+# Inputs for Histogram / Dist_Plot
 b = np.round(fp_*10000,0)
 b = np.array(b,dtype=int)
 c = np.repeat(data.values,b)
-
-
 # Group data together
 hist_data = [c, data]
 group_labels = ['Distribution - Regime', 'Distribution - Equal Weighted']
-
-# Create distplot with custom bin_size
+# Create distplot 
 fig = ff.create_distplot(hist_data, 
                          group_labels,
                          curve_type = "normal",
                          bin_size=.3,
                          show_hist=False)
-
+# Show the plot
 st.plotly_chart(fig)
 
 
