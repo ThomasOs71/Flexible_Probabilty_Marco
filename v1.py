@@ -84,7 +84,7 @@ import plotly.figure_factory as ff
 st.sidebar.header('Input Parameters')
 
 ### Input 1: Fred API
-input1_fredapi = st.sidebar.text_input('Fred API', value='')
+input1_fredapi = st.sidebar.text_input('Fred API:(Leave Blank or Input your own)', value='')
 
 if input1_fredapi == "":
     input1_fredapi = st.secrets["FredAPI"]
@@ -97,7 +97,9 @@ st.sidebar.subheader('Regime Variable')
 ## Input 2: Time Series
 # Dictionary of Seleted Fred Time Series
 options_ts_dict = {"Leading Indicators OECD: Leading Indicators": "USALOLITONOSTSAM", 
-                   "Coincident Economic Activity Index for the United States":"USPHCI"}
+                   "Coincident Economic Activity Index for the United States":"USPHCI",
+                   "St. Louis Fed Financial Stress Index":"STLFSI4",
+                   "Chicago Fed National Financial Conditions Index": "NFCI"}
 # Change to List
 options_ts = list(options_ts_dict.keys())
 # Display select box
@@ -130,7 +132,12 @@ selected_option_trans = st.sidebar.selectbox("Data Transformation:", options_tra
 
 # Get Fred Download
 # fred_api = "551dd59ab0588de45222e068c5da4951"
+
+input1_fredapi = "551dd59ab0588de45222e068c5da4951"
+
 fred = fredapi.Fred(input1_fredapi)
+
+
 
 # Retrieve data from FRED based on user input
 
@@ -154,7 +161,7 @@ try:
 except Exception as e:
     st.error(f'Error retrieving data: {e}')
 
-# %% Flexible Probability: Inputs Calculation
+# %% Flexible Probability: Inputs & Calculation
 
 ### Inputs
 st.sidebar.subheader('Regime Calculation Input')
@@ -283,8 +290,6 @@ st.plotly_chart(fig_plotly)
 # 
 st.subheader("Probability Plot")
 
-prob_bar = go
-
 # Create scatter trace with mode 'lines+markers'
 fig = go.Figure()
 fig.add_trace(go.Scatter(x=data.index, y=fp_, mode='lines+markers',name = "Regime Weight"))
@@ -297,10 +302,6 @@ fig.update_layout(yaxis=dict(tickformat='.2%'))
 # Show the plot
 st.plotly_chart(fig)
 
-
-
-
-# Create histogram 
 
 st.subheader("Distribution of Regime Variable")
 ### Create Plotly Graph - Regime Plot
@@ -321,31 +322,6 @@ fig = ff.create_distplot(hist_data,
                          show_hist=False)
 
 st.plotly_chart(fig)
-
-
-### Mean-Covariance Graph for S&P
-# https://fred.stlouisfed.org/series/SP500
-
-data_sp500 = fred.get_series("SP500",time_datetime)     
-metadata = fred.get_series_info("SP500")
-
-# Resample to get index of same type
-data_ = data.resample("ME").last()
-data_normalized = (data_ - data_.mean()) / data_.std()
-data_sp500_ = data_sp500.resample("ME").last()
-data_sp500_shift = data_sp500_.shift(-3) / data_sp500_ -1
-
-# Combine Data
-data_com = pd.DataFrame(data_normalized).join(pd.DataFrame(data_sp500_shift,columns=["SP500"]))
-
-# Generate Data points
-plt.show()
-plt.scatter(data_com.iloc[:,0], data_com.iloc[:,1])
-
-
-
-
-
 
 
 # %% Download Function
