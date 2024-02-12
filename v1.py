@@ -77,13 +77,18 @@ from plotly.subplots import make_subplots
 import plotly.figure_factory as ff
 
 
+
 # %% Define Sidebar Element 1: Regime Variable Download
 
 ### Header 
 st.sidebar.header('Input Parameters')
 
 ### Input 1: Fred API
-input1_fredapi = st.sidebar.text_input('Fred API', value='551dd59ab0588de45222e068c5da4951')
+input1_fredapi = st.sidebar.text_input('Fred API', value='')
+
+if input1_fredapi == "":
+    input1_fredapi = st.secret["FredKey"]
+
 
 ### Section - Regime Variable
 st.sidebar.subheader('Regime Variable')
@@ -185,7 +190,7 @@ st.latex(r'''
          p_{t}|z^{*} = p*exp({(-((x-\mu_{x})^{'} * (h^{2})^{(-1)} * (x - \mu_{x})))})       
          ''')
 st.latex(r'''
-         with: \mu_{x}=E\{X|z^{*}\}),~ h \in \mathbb{R},~z^{*}: Regime-Value 
+         with: \mu_{x}=E\{X|z^{*}\},~ h \in \mathbb{R},~z^{*}: Regime-Value 
          ''')
 st.write("h is the Bandwith Parameter and determines the amount of information included in the analysis.")
 
