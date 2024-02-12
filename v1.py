@@ -109,7 +109,7 @@ st.sidebar.write("Selected option:", input2_series_id)
 
 ## Input 3: Determine DL Start Date
 # User input for FRED series ID
-input3_time_id = st.sidebar.text_input('Download Start Date:',"2000-01-01")
+input3_time_id = st.sidebar.text_input('Download Start Date:',"1980-01-01")
 # Change to Datetime
 time_datetime = datetime.datetime.strptime(input3_time_id,"%Y-%m-%d")
 
@@ -178,8 +178,8 @@ st.title('Regime Analysis of the US Economy')
 
 ### Explanation of Approach
 st.subheader('Empirical Approach')
-st.write("Approach to use State-Dependent probabilities that aim at improving the Signal-to-Noise Ratio.")
-st.write("Instead of using equal weights across time, this approach increase weights that are close to a determined point in time.")
+st.write("The following approach determines state-dependent probabilities based on a selected economic time series and a predefined data.\n that aim at improving the Signal-to-Noise Ratio.")
+st.write("Instead of using equal weights across time, this approach increase weights that are close to a determined point in time. Thereby, it overweights past data points which regimes which are close to the current one.")
 st.write("The Analysis marks data points with are similar to the data point of the selected Regime Period.")
 st.write("The darker the point, the higher the resemblence.") 
 st.write("A point with a higher resemblence obtains a higher weight according to the Gaussian Kernel (Mahalanobis Distance):")
