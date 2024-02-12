@@ -232,8 +232,8 @@ layout = go.Layout(
     legend=dict(x=0, y=-0.3),  # Adjust legend position
     annotations=[
         dict(
-            x=0,
-            y=np.max(data),
+            x = np.min(data.index),
+            y = np.max(data),
             xref="x",
             yref="y",
             text=ens_string,
