@@ -87,8 +87,8 @@ st.sidebar.header('Input Parameters')
 input1_fredapi = st.sidebar.text_input('Fred API', value='')
 
 if input1_fredapi == "":
-    # input1_fredapi = st.secret["FredKey"]
-    input1_fredapit = "551dd59ab0588de45222e068c5da4951"
+    input1_fredapi = st.secrets["FredAPI"]
+    
 
 ### Section - Regime Variable
 st.sidebar.subheader('Regime Variable')
